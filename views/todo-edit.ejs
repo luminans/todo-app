@@ -2,15 +2,51 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Edit To Do</title>
-  <link rel="stylesheet" href="/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Task - Todo App</title>
+  <link rel="stylesheet" href="/styles.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-  <h1>Edit To Do</h1>
-  <form action="/todos/<%= todo.id %>/edit" method="POST">
-    <input type="text" name="title" value="<%= todo.title %>" required>
-    <button type="submit">Edit</button>
-  </form>
-  <a href="/todos">Back to List</a>
+  <div class="container">
+    <div class="header">
+      <h1>
+        <span class="material-icons" style="font-size: 3rem; vertical-align: middle; margin-right: 16px;">edit</span>
+        Edit Task
+      </h1>
+      <p>Update your task details</p>
+    </div>
+
+    <div class="card" style="max-width: 500px; margin: 0 auto;">
+      <form action="/todos/<%= todo.id %>/edit" method="POST">
+        <div class="form-group">
+          <label for="title" style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">
+            <span class="material-icons" style="vertical-align: middle; margin-right: 8px; font-size: 1.2rem;">task</span>
+            Task Title
+          </label>
+          <input type="text" id="title" name="title" class="form-control" value="<%= todo.title %>" required 
+                 placeholder="Enter your task title" autofocus>
+        </div>
+        
+        <div style="margin-top: 24px; display: flex; gap: 12px;">
+          <button type="submit" class="btn btn-primary">
+            <span class="material-icons" style="vertical-align: middle; margin-right: 8px;">save</span>
+            Save Changes
+          </button>
+          <a href="/todos" class="btn btn-secondary">
+            <span class="material-icons" style="vertical-align: middle; margin-right: 8px;">arrow_back</span>
+            Cancel
+          </a>
+        </div>
+      </form>
+    </div>
+
+    <div class="nav-links">
+      <a href="/todos">
+        <span class="material-icons" style="vertical-align: middle; margin-right: 4px; font-size: 1rem;">list</span>
+        Back to Todo List
+      </a>
+    </div>
+  </div>
 </body>
 </html> 

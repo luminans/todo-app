@@ -2,22 +2,61 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Login</title>
-  <link rel="stylesheet" href="/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Todo App</title>
+  <link rel="stylesheet" href="/styles.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-  <h1>Login</h1>
-  <form action="/login" method="POST">
-    <div>
-      <label for="userid">ID:</label>
-      <input type="text" id="userid" name="userid" required>
+  <div class="container">
+    <div class="header">
+      <h1>
+        <span class="material-icons" style="font-size: 3rem; vertical-align: middle; margin-right: 16px;">login</span>
+        Login
+      </h1>
+      <p>Welcome back! Please sign in to your account</p>
     </div>
-    <div>
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" required>
+
+    <div class="card" style="max-width: 400px; margin: 0 auto;">
+      <form action="/login" method="POST">
+        <div class="form-group">
+          <label for="userid" style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">
+            <span class="material-icons" style="vertical-align: middle; margin-right: 8px; font-size: 1.2rem;">person</span>
+            User ID
+          </label>
+          <input type="text" id="userid" name="userid" class="form-control" required 
+                 placeholder="Enter your user ID">
+        </div>
+        
+        <div class="form-group">
+          <label for="password" style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">
+            <span class="material-icons" style="vertical-align: middle; margin-right: 8px; font-size: 1.2rem;">lock</span>
+            Password
+          </label>
+          <input type="password" id="password" name="password" class="form-control" required 
+                 placeholder="Enter your password">
+        </div>
+        
+        <div style="margin-top: 24px;">
+          <button type="submit" class="btn btn-primary" style="width: 100%;">
+            <span class="material-icons" style="vertical-align: middle; margin-right: 8px;">login</span>
+            Sign In
+          </button>
+        </div>
+      </form>
+
+      <div class="nav-links">
+        <a href="/register">
+          <span class="material-icons" style="vertical-align: middle; margin-right: 4px; font-size: 1rem;">person_add</span>
+          Don't have an account? Sign up
+        </a>
+        <br><br>
+        <a href="/">
+          <span class="material-icons" style="vertical-align: middle; margin-right: 4px; font-size: 1rem;">home</span>
+          Back to Home
+        </a>
+      </div>
     </div>
-    <button type="submit">Login</button>
-  </form>
-  <a href="/">Back to Home</a>
+  </div>
 </body>
 </html> 
