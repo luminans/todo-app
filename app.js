@@ -7,9 +7,20 @@ const bcrypt = require('bcrypt');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Database initialization
-const dbPath = path.join(__dirname, 'db', 'todo.db');
-const initDb = new sqlite3.Database(dbPath);
+// Database initialization - use a writable location
+const dbPath = process.env.NODE_ENV === 'production' 
+  ? path.join(process.cwd(), 'todo.db')  // Use current working directory in production
+  : path.join(__dirname, 'db', 'todo.db'); // Use local db folder in development
+
+console.log('Database path:', dbPath);
+
+const initDb = new sqlite3.Database(dbPath, (err) => {
+  if (err) {
+    console.error('Error opening database:', err.message);
+  } else {
+    console.log('Connected to SQLite database');
+  }
+});
 
 initDb.serialize(() => {
   initDb.run(`
@@ -18,7 +29,14 @@ initDb.serialize(() => {
       password TEXT NOT NULL,
       email TEXT NOT NULL
     )
-  `);
+  `, (err) => {
+    if (err) {
+      console.error('Error creating users table:', err.message);
+    } else {
+      console.log('Users table ready');
+    }
+  });
+  
   initDb.run(`
     CREATE TABLE IF NOT EXISTS todos (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -27,7 +45,14 @@ initDb.serialize(() => {
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY(user_id) REFERENCES users(id)
     )
-  `);
+  `, (err) => {
+    if (err) {
+      console.error('Error creating todos table:', err.message);
+    } else {
+      console.log('Todos table ready');
+    }
+  });
+  
   console.log('Database initialized successfully');
 });
 
@@ -57,6 +82,15 @@ function requireLogin(req, res, next) {
   }
   next();
 }
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ 
+    status: 'OK', 
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
 
 // Home route
 app.get('/', (req, res) => {
