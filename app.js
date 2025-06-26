@@ -7,6 +7,32 @@ const bcrypt = require('bcrypt');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Database initialization
+const dbPath = path.join(__dirname, 'db', 'todo.db');
+const initDb = new sqlite3.Database(dbPath);
+
+initDb.serialize(() => {
+  initDb.run(`
+    CREATE TABLE IF NOT EXISTS users (
+      id TEXT PRIMARY KEY,
+      password TEXT NOT NULL,
+      email TEXT NOT NULL
+    )
+  `);
+  initDb.run(`
+    CREATE TABLE IF NOT EXISTS todos (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id TEXT NOT NULL,
+      title TEXT NOT NULL,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY(user_id) REFERENCES users(id)
+    )
+  `);
+  console.log('Database initialized successfully');
+});
+
+initDb.close();
+
 // Set EJS as the template engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -23,8 +49,6 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }));
-
-const dbPath = path.join(__dirname, 'db', 'todo.db');
 
 // Middleware to check login
 function requireLogin(req, res, next) {
